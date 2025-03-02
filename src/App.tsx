@@ -10,7 +10,7 @@ function App() {
     <ThemeProvider>
       <BrowserRouter>
         <Container disableGutters>
-          <Navbar title='Tranquility Base' />
+          <Navbar title='Tranquility' />
           <MoviesList />
         </Container>
       </BrowserRouter>

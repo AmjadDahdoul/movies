@@ -37,8 +37,8 @@ export const SearchField = (
     <TextField
       label='Search'
       variant='standard'
-      color='primary'
       value={localSearch}
+      size='small'
       onChange={handleSearchChange}
       {...props}
       slotProps={{
