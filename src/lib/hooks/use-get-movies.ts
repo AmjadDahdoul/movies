@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const URL_API = process.env.URL_API;
+const URL_API = "https://imdb.iamidiotareyoutoo.com/search?q=";
 
 export const useGetMovies = (searchQuery: string) => {
   const [movies, setMovies] = useState([]);
