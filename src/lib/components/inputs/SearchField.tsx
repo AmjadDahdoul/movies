@@ -14,7 +14,7 @@ export const SearchField = (
   const debouncedSetSearch = useCallback(
     (value: string) => {
       const timeout = setTimeout(() => {
-        setSearchParams({ search: value });
+        setSearchParams({ search: value }, { replace: true });
       }, 300);
 
       return () => clearTimeout(timeout);
@@ -30,7 +30,7 @@ export const SearchField = (
 
   const handleClear = () => {
     setLocalSearch("");
-    setSearchParams({ search: "" });
+    setSearchParams({ search: "" }, { replace: true });
   };
 
   return (
