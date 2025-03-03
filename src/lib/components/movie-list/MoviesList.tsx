@@ -11,7 +11,7 @@ export const MoviesList = () => {
 
   const { movies, isLoading } = useGetMovies(search || "");
 
-  const cleanMovies = movies.map((movie) => ({
+  const formattedMovies = movies.map((movie) => ({
     imgPoster: movie[MovieEnum.IMG_POSTER],
     title: movie[MovieEnum.TITLE],
     aka: movie[MovieEnum.AKA],
@@ -32,12 +32,12 @@ export const MoviesList = () => {
       <Grid2 container spacing={2} justifyContent='center'>
         {isLoading ? (
           <MovieCardSkeleton count={8} />
-        ) : cleanMovies.length === 0 && search ? (
+        ) : formattedMovies.length === 0 && search ? (
           <Typography variant='h6'>
             No movies found matching "{search}"
           </Typography>
         ) : (
-          cleanMovies.map((movie) => (
+          formattedMovies.map((movie) => (
             <Grid2 size='auto' key={movie.imdbId}>
               <MovieCard {...movie} />
             </Grid2>
