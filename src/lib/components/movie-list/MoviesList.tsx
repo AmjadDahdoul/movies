@@ -7,8 +7,9 @@ import { MovieCardSkeleton } from "../movie-card/MovieCardSkeleton";
 
 export const MoviesList = () => {
   const [searchParams] = useSearchParams();
+  const search = searchParams.get("search");
 
-  const { movies, isLoading } = useGetMovies(searchParams.get("search") || "");
+  const { movies, isLoading } = useGetMovies(search || "");
 
   const cleanMovies = movies.map((movie) => ({
     imgPoster: movie[MovieEnum.IMG_POSTER],
@@ -18,7 +19,7 @@ export const MoviesList = () => {
     year: movie[MovieEnum.YEAR],
   }));
 
-  if (searchParams.get("search") === "") {
+  if (!search) {
     return (
       <Stack spacing={2} alignItems={"center"}>
         <Typography variant='h6'>Search for something...</Typography>
@@ -31,8 +32,10 @@ export const MoviesList = () => {
       <Grid2 container spacing={2} justifyContent='center'>
         {isLoading ? (
           <MovieCardSkeleton count={8} />
-        ) : cleanMovies.length === 0 ? (
-          <Typography variant='h6'>No movies found</Typography>
+        ) : cleanMovies.length === 0 && search ? (
+          <Typography variant='h6'>
+            No movies found matching "{search}"
+          </Typography>
         ) : (
           cleanMovies.map((movie) => (
             <Grid2 size='auto' key={movie.imdbId}>
