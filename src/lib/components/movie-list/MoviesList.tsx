@@ -19,14 +19,6 @@ export const MoviesList = () => {
     year: movie[MovieEnum.YEAR],
   }));
 
-  if (!search) {
-    return (
-      <Stack spacing={2} alignItems={"center"}>
-        <Typography variant='h6'>Search for something...</Typography>
-      </Stack>
-    );
-  }
-
   return (
     <Stack spacing={2} alignItems={"center"}>
       <Grid2 container spacing={2} justifyContent='center'>
