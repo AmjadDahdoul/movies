@@ -20,5 +20,13 @@ export interface MovieDetails {
     actor: {
       name: string;
     }[];
+    datePublished: string;
+    aggregateRating: {
+      ratingValue: string;
+    };
+    genre: string;
+    director: {
+      name: string;
+    };
   };
 }
