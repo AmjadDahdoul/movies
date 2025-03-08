@@ -16,6 +16,7 @@ export const Layout = ({ children, title = "Tranquility" }: LayoutProps) => {
         flexGrow: 1,
         display: "flex",
         flexDirection: "column",
+        padding: 0,
       }}
     >
       <Navbar title={title} />
