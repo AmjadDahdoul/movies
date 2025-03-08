@@ -13,6 +13,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { useGetMovieDetails } from "../../hooks/use-get-movie-details";
 import { MovieLoadingSkeleton } from "./MovieLoadingSkeleton";
+import { FALLBACK_IMAGE } from "../movie-card/MovieCard";
 
 interface MovieModalProps {
   isModalOpen: boolean;
@@ -25,6 +26,16 @@ export const MovieModal = (props: MovieModalProps) => {
 
   const { movieDetails, isLoading } = useGetMovieDetails({ movieId });
   const movie = movieDetails?.short;
+
+  const ratingColor = (rating: string) => {
+    if (rating >= "7") {
+      return "rgb(0, 126, 8, 0.6)";
+    }
+    if (rating >= "5") {
+      return "rgba(255, 193, 7, 0.6)";
+    }
+    return "rgba(220, 0, 0, 0.6)";
+  };
 
   const renderDuration = () => {
     return movie?.duration ? (
@@ -107,7 +118,7 @@ export const MovieModal = (props: MovieModalProps) => {
       <Box
         sx={{
           borderRadius: "50%",
-          bgcolor: "rgba(0,0,0,0.7)",
+          bgcolor: ratingColor(movie.aggregateRating.ratingValue),
           width: 70,
           height: 70,
           padding: 2,
@@ -127,14 +138,15 @@ export const MovieModal = (props: MovieModalProps) => {
     return (
       <Box
         sx={{
-          width: { xs: "100%", md: 300 },
-          height: "auto",
-          position: "relative",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 2,
         }}
       >
         <Box
           component='img'
-          src={movie?.image}
+          src={movie?.image || FALLBACK_IMAGE}
           alt={movie?.name || "Movie poster"}
           sx={{
             width: "100%",

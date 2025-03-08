@@ -19,8 +19,8 @@ export const Navbar = (props: NavbarProps) => {
           sm: 2,
         },
         borderRadius: {
-          sm: 0,
-          md: 3,
+          xs: 0,
+          sm: 3,
         },
       }}
     >

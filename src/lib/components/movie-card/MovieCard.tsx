@@ -10,7 +10,7 @@ interface MovieCardProps {
   imdbId: string;
 }
 
-const FALLBACK_IMAGE =
+export const FALLBACK_IMAGE =
   "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExazdzdG15cHBrdDJ5dWNxZGNibjNkdnFuZmNjdzh3b3pmM3BjZmcweSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l44QvKoQuUD3xPZKg/giphy.gif";
 
 export const MovieCard = (props: MovieCardProps) => {
