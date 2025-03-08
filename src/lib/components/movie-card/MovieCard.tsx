@@ -1,7 +1,7 @@
-import { Box, Card, CardMedia, Modal, Stack, Typography } from "@mui/material";
+import { Box, Card, CardMedia, Typography } from "@mui/material";
 import styles from "./MovieCard.module.scss";
 import { useState } from "react";
-import { useGetMovieDetails } from "../../hooks/use-get-movie-details";
+import { MovieModal } from "../movie-modal/MovieModal";
 
 interface MovieCardProps {
   imgPoster: string;
@@ -9,6 +9,9 @@ interface MovieCardProps {
   aka: string;
   imdbId: string;
 }
+
+const FALLBACK_IMAGE =
+  "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExazdzdG15cHBrdDJ5dWNxZGNibjNkdnFuZmNjdzh3b3pmM3BjZmcweSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l44QvKoQuUD3xPZKg/giphy.gif";
 
 export const MovieCard = (props: MovieCardProps) => {
   const { imgPoster, title, aka, imdbId } = props;
@@ -20,21 +23,9 @@ export const MovieCard = (props: MovieCardProps) => {
     setIsModalOpen(true);
   };
 
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: "70%",
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
+  const handleOnClose = () => {
+    setIsModalOpen(false);
   };
-
-  const { movieDetails } = useGetMovieDetails({ movieId });
-
-  console.log(movieDetails);
 
   return (
     <>
@@ -42,7 +33,7 @@ export const MovieCard = (props: MovieCardProps) => {
         <CardMedia
           className={styles.cardImage}
           component='img'
-          image={imgPoster}
+          image={imgPoster || FALLBACK_IMAGE}
           alt={title}
         />
         <Box className={styles.overlay}>
@@ -56,38 +47,11 @@ export const MovieCard = (props: MovieCardProps) => {
         </Box>
       </Card>
 
-      <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <Box sx={style}>
-          <Stack spacing={3} direction='row'>
-            <img
-              src={movieDetails?.short?.image}
-              alt={title}
-              width={300}
-              height={300}
-            />
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space",
-              }}
-            >
-              <Typography variant='h6'>
-                {movieDetails?.short?.duration}
-              </Typography>
-
-              <Typography variant='h6'>
-                {movieDetails?.short?.description}
-              </Typography>
-              {movieDetails?.short?.actor.map((actor, index) => (
-                <Typography key={index} variant='h6'>
-                  {actor.name}
-                </Typography>
-              ))}
-            </Box>
-          </Stack>
-        </Box>
-      </Modal>
+      <MovieModal
+        isModalOpen={isModalOpen}
+        movieId={movieId}
+        onClose={handleOnClose}
+      />
     </>
   );
 };
