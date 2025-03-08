@@ -48,7 +48,6 @@ export const MOVIES_KEY_WORDS = [
   // Comedy / Cult Classic
   "napo", // Napoleon Dynamite
   "anch", // Anchorman
-  "dumb", // Dumb and Dumber
   "wayn", // Wayne's World
   "cler", // Clerks
   "offsp", // Office Space
@@ -63,7 +62,6 @@ export const MOVIES_KEY_WORDS = [
 
   // Movies with some mild adult themes but no explicit visuals:
   "step", // Step Brothers
-  "tall", // Talladega Nights
   "haro", // Harold & Kumar Go to White Castle
 
   // Animation / Family
