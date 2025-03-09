@@ -1,7 +1,7 @@
 import { Box, Card, CardMedia, Typography } from "@mui/material";
 import styles from "./MovieCard.module.scss";
 import { SearchMovie, WatchedMoviesItems } from "../../types/types";
-import { MovieModal } from "../movie-modal/MovieModal";
+import { FALLBACK_IMAGE, MovieModal } from "../movie-modal/MovieModal";
 import { useState } from "react";
 
 export const MovieCard = (props: SearchMovie | WatchedMoviesItems) => {
@@ -22,7 +22,11 @@ export const MovieCard = (props: SearchMovie | WatchedMoviesItems) => {
         <CardMedia
           className={styles.cardImage}
           component='img'
-          image={`https://image.tmdb.org/t/p/w500/${poster_path}`}
+          image={
+            poster_path
+              ? `https://image.tmdb.org/t/p/w500/${poster_path}`
+              : FALLBACK_IMAGE
+          }
           alt={title}
         />
         <Box className={styles.overlay}>

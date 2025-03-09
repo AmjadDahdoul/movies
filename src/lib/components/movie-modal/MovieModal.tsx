@@ -20,8 +20,8 @@ interface MovieModalProps {
   onClose: () => void;
 }
 
-// Define a fallback image constant
-const FALLBACK_IMAGE = "/placeholder-movie.jpg";
+export const FALLBACK_IMAGE =
+  "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExdzBtdTBnc2ppMGl2dWhyb3ZkYXFqeHhvdzF2dzZxd2lscmU2Nm5kbCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3zhxq2ttgN6rEw8SDx/giphy.gif";
 
 export const MovieModal = (props: MovieModalProps) => {
   const { movieId, isModalOpen, onClose } = props;
