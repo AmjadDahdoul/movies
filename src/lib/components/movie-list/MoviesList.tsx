@@ -9,7 +9,8 @@ export const MoviesList = () => {
   const [searchParams] = useSearchParams();
   const search = searchParams.get("search");
   const { movies: searchedMovied, isLoading } = useGetMovies(search || "");
-  const { watchedMovies } = useGetWatchedMovesList();
+  const { watchedMovies, isLoading: isLoadingWatchedMovies } =
+    useGetWatchedMovesList();
 
   const watchedMoviesList = watchedMovies?.items || [];
 
@@ -17,11 +18,11 @@ export const MoviesList = () => {
 
   return (
     <Stack spacing={2} alignItems={"center"}>
-      {watchedMoviesList && !search && (
+      {watchedMoviesList && !search && !isLoadingWatchedMovies && (
         <Typography variant='h6'>Watched Movies</Typography>
       )}
       <Grid2 container spacing={2} justifyContent='center'>
-        {isLoading ? (
+        {isLoading || isLoadingWatchedMovies ? (
           <MovieCardSkeleton count={10} />
         ) : movies.length === 0 && search ? (
           <Typography variant='h6'>
