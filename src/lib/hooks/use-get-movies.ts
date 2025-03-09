@@ -1,51 +1,57 @@
 import { useEffect, useState } from "react";
-import { GetRandomMovie } from "./use-get-random-movie";
+import { SearchMovie } from "../types/types";
 
-const URL_API = "https://imdb.iamidiotareyoutoo.com/search?q=";
+type Movie = SearchMovie[];
+
+const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
 export const useGetMovies = (searchQuery: string) => {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState<Movie>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [actualQuery, setActualQuery] = useState(searchQuery);
+  const [error, setError] = useState<unknown>(null);
 
   useEffect(() => {
     if (!searchQuery) {
-      const randomMovie = GetRandomMovie();
-      setActualQuery(randomMovie);
-    } else {
-      setActualQuery(searchQuery);
-    }
-  }, [searchQuery]);
-
-  useEffect(() => {
-    if (!actualQuery) {
+      setMovies([]);
       return;
     }
 
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${API_KEY}`,
+      },
+    };
+
     setIsLoading(true);
 
-    const fetchMovie = async () => {
+    const fetchMovies = async () => {
       try {
-        const response = await fetch(`${URL_API}${actualQuery}`);
-        if (!response.ok) throw new Error("Failed to fetch");
-
-        const movieData = await response.json();
-        setMovies(movieData.description);
+        const response = await fetch(
+          `https://api.themoviedb.org/3/search/movie?query=${searchQuery}&include_adult=false&language=en-US&page=1`,
+          options
+        );
+        const data = await response.json();
+        setMovies(data.results);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching movie data:", error);
+        setError(error);
         setMovies([]);
+        setIsLoading(false);
       } finally {
         setIsLoading(false);
       }
     };
 
-    const debounceTimer = setTimeout(fetchMovie, 500);
+    const debounceTimer = setTimeout(fetchMovies, 500);
     return () => clearTimeout(debounceTimer);
-  }, [actualQuery]);
+  }, [searchQuery]);
 
   return {
     movies,
     isLoading,
-    randomKeywordUsed: !searchQuery && movies.length > 0,
+    error,
   };
 };
