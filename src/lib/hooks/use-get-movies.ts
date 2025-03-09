@@ -1,6 +1,7 @@
 import { useTmdbApi } from "./use-Tmdb-Api";
 import { SearchMovie } from "../types/types";
 import { useSearchParams } from "react-router";
+import { useCallback, useEffect } from "react";
 
 interface MoviesResponse {
   results: SearchMovie[];
@@ -10,8 +11,19 @@ interface MoviesResponse {
 }
 
 export const useGetMovies = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get("search") || "";
+
+  const clearEmptySearch = useCallback(() => {
+    if (!search) {
+      // Note: this will clear all search parameters
+      setSearchParams({}, { replace: true });
+    }
+  }, [search, setSearchParams]);
+
+  useEffect(() => {
+    clearEmptySearch();
+  }, [clearEmptySearch]);
 
   const { data, isLoading, error } = useTmdbApi<MoviesResponse>({
     endpoint: "/search/movie",
