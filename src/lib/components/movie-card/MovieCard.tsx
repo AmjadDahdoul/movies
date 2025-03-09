@@ -1,10 +1,10 @@
 import { Box, Card, CardMedia, Typography } from "@mui/material";
 import styles from "./MovieCard.module.scss";
-import { SearchMovie } from "../../types/types";
+import { SearchMovie, WatchedMoviesItems } from "../../types/types";
 import { MovieModal } from "../movie-modal/MovieModal";
 import { useState } from "react";
 
-export const MovieCard = (props: SearchMovie) => {
+export const MovieCard = (props: SearchMovie | WatchedMoviesItems) => {
   const { id: movieId, poster_path, title, original_title } = props;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
