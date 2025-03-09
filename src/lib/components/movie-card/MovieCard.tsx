@@ -4,13 +4,13 @@ import { SearchMovie, WatchedMoviesItems } from "../../types/types";
 import { FALLBACK_IMAGE, MovieModal } from "../movie-modal/MovieModal";
 import { useState } from "react";
 import { useAddWatchedMovies } from "../../hooks/use-add-watched-moveis";
-import { useGetWatchedMovesList } from "../../hooks/use-get-watched-movies-list";
+import { useGetWatchedMoviesList } from "../../hooks/use-get-watched-movies-list";
 
 export const MovieCard = (props: SearchMovie | WatchedMoviesItems) => {
-  const { id: movieId, poster_path, title } = props;
+  const { id: movieId, poster_path, title, original_title } = props;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { watchedMovies } = useGetWatchedMovesList();
+  const { watchedMovies } = useGetWatchedMoviesList();
   const listOfWatchedMovies = watchedMovies?.items.map((item) => item.id);
 
   const alreadyWatched = listOfWatchedMovies?.includes(movieId) ?? true;
@@ -51,7 +51,7 @@ export const MovieCard = (props: SearchMovie | WatchedMoviesItems) => {
             fontFamily='sans-serif'
             textAlign={"center"}
           >
-            {title}
+            {original_title}
           </Typography>
           <Button
             variant='contained'
