@@ -17,7 +17,7 @@ export interface SearchMovie {
 
 export interface MovieDetails extends SearchMovie {
   backdrop_path: string;
-  // belongs_to_collection: null;
+  // belongs_to_collection: null; // Will get back to it later
   budget: number;
   genres: {
     id: number;
