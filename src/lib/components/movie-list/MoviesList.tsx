@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router";
 import { useGetMovies } from "../../hooks/use-get-movies";
 import { MovieCard } from "../movie-card/MovieCard";
 import { MovieCardSkeleton } from "../movie-card/MovieCardSkeleton";
-import { useGetWatchedMovesList } from "../../hooks/use-get-watched-moves-list";
+import { useGetWatchedMovesList } from "../../hooks/use-get-watched-movies-list";
 
 export const MoviesList = () => {
   const [searchParams] = useSearchParams();
@@ -17,6 +17,9 @@ export const MoviesList = () => {
 
   return (
     <Stack spacing={2} alignItems={"center"}>
+      {watchedMoviesList && !search && (
+        <Typography variant='h6'>Watched Movies</Typography>
+      )}
       <Grid2 container spacing={2} justifyContent='center'>
         {isLoading ? (
           <MovieCardSkeleton count={10} />
