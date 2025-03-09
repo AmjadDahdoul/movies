@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router";
 import { useGetWatchedMoviesList } from "../../hooks/use-get-watched-movies-list";
 import { WatchedMovies } from "../watched-movies/WatchedMovies";
 import { useGetMovies } from "../../hooks/use-get-movies";
-import { SearchedMovies } from "../search-movies/SearchedMovies";
+import { SearchedMovies } from "../searched-movies/SearchedMovies";
 import { MovieCardSkeleton } from "../movie-card/MovieCardSkeleton";
 
 export const MoviesListLayout = () => {
