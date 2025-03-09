@@ -30,7 +30,8 @@ export const SearchField = (
 
   const handleClear = () => {
     setLocalSearch("");
-    setSearchParams({ search: "" }, { replace: true });
+    // Note: this will clear all search parameters
+    setSearchParams({}, { replace: true });
   };
 
   return (
