@@ -1,25 +1,14 @@
 import { Box, Card, CardMedia, Typography } from "@mui/material";
 import styles from "./MovieCard.module.scss";
-import { useState } from "react";
+import { SearchMovie } from "../../types/types";
 import { MovieModal } from "../movie-modal/MovieModal";
+import { useState } from "react";
 
-interface MovieCardProps {
-  imgPoster: string;
-  title: string;
-  aka: string;
-  imdbId: string;
-}
-
-export const FALLBACK_IMAGE =
-  "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExazdzdG15cHBrdDJ5dWNxZGNibjNkdnFuZmNjdzh3b3pmM3BjZmcweSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l44QvKoQuUD3xPZKg/giphy.gif";
-
-export const MovieCard = (props: MovieCardProps) => {
-  const { imgPoster, title, aka, imdbId } = props;
-  const [movieId, setMovieId] = useState<string>("");
+export const MovieCard = (props: SearchMovie) => {
+  const { id: movieId, poster_path, title, original_title } = props;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOnMovieClick = () => {
-    setMovieId(imdbId);
     setIsModalOpen(true);
   };
 
@@ -33,7 +22,7 @@ export const MovieCard = (props: MovieCardProps) => {
         <CardMedia
           className={styles.cardImage}
           component='img'
-          image={imgPoster || FALLBACK_IMAGE}
+          image={`https://image.tmdb.org/t/p/w500/${poster_path}`}
           alt={title}
         />
         <Box className={styles.overlay}>
@@ -42,7 +31,7 @@ export const MovieCard = (props: MovieCardProps) => {
             fontFamily='sans-serif'
             textAlign={"center"}
           >
-            {aka}
+            {original_title}
           </Typography>
         </Box>
       </Card>

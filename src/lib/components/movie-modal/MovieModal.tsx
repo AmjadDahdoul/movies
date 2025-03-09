@@ -13,67 +13,63 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { useGetMovieDetails } from "../../hooks/use-get-movie-details";
 import { MovieLoadingSkeleton } from "./MovieLoadingSkeleton";
-import { FALLBACK_IMAGE } from "../movie-card/MovieCard";
 
 interface MovieModalProps {
   isModalOpen: boolean;
-  movieId: string;
+  movieId: number;
   onClose: () => void;
 }
+
+// Define a fallback image constant
+const FALLBACK_IMAGE = "/placeholder-movie.jpg";
 
 export const MovieModal = (props: MovieModalProps) => {
   const { movieId, isModalOpen, onClose } = props;
 
   const { movieDetails, isLoading } = useGetMovieDetails({ movieId });
-  const movie = movieDetails?.short;
 
-  const ratingColor = (rating: string) => {
-    if (rating >= "7") {
+  const ratingColor = (rating: number) => {
+    if (rating >= 7) {
       return "rgb(0, 126, 8, 0.6)";
     }
-    if (rating >= "5") {
+    if (rating >= 5) {
       return "rgba(255, 193, 7, 0.6)";
     }
     return "rgba(220, 0, 0, 0.6)";
   };
 
   const renderDuration = () => {
-    return movie?.duration ? (
+    return movieDetails?.runtime ? (
       <Stack direction='row' spacing={1} alignItems='center'>
         <AccessTimeIcon fontSize='small' color='action' />
         <Typography variant='subtitle1' color='text.secondary'>
-          {movie.duration.slice(2)}
+          {Math.floor(movieDetails.runtime / 60)}h {movieDetails.runtime % 60}m
         </Typography>
       </Stack>
     ) : null;
   };
 
   const renderReleaseYear = () => {
-    return movie?.datePublished ? (
+    return movieDetails?.release_date ? (
       <Stack direction='row' spacing={1} alignItems='center'>
         <CalendarTodayIcon fontSize='small' color='action' />
         <Typography variant='subtitle1' color='text.secondary'>
-          {new Date(movie.datePublished).getFullYear()}
+          {new Date(movieDetails.release_date).getFullYear()}
         </Typography>
       </Stack>
     ) : null;
   };
 
   const renderDescription = () => {
-    return movie?.description ? (
-      <Typography
-        variant='body1'
-        sx={{ mt: 1 }}
-        id='movie-modal-description'
-        dangerouslySetInnerHTML={{
-          __html: movie?.description || "",
-        }}
-      />
+    return movieDetails?.overview ? (
+      <Typography variant='body1' sx={{ mt: 1 }} id='movie-modal-description'>
+        {movieDetails.overview}
+      </Typography>
     ) : null;
   };
 
   const renderMovieTitle = () => {
-    return movie?.name ? (
+    return movieDetails?.title ? (
       <Typography
         variant='h4'
         component='h2'
@@ -83,42 +79,33 @@ export const MovieModal = (props: MovieModalProps) => {
           color: "primary.main",
         }}
       >
-        {movie.name}
+        {movieDetails.title}
       </Typography>
     ) : null;
   };
 
   const renderGenres = () => {
-    return movie?.genre ? (
+    return movieDetails?.genres && movieDetails.genres.length > 0 ? (
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-        {Array.isArray(movie.genre) ? (
-          movie.genre.map((genre, index) => (
-            <Chip
-              key={index}
-              label={genre}
-              size='small'
-              color='primary'
-              variant='outlined'
-            />
-          ))
-        ) : (
+        {movieDetails.genres.map((genre) => (
           <Chip
-            label={movie.genre}
+            key={genre.id}
+            label={genre.name}
             size='small'
             color='primary'
             variant='outlined'
           />
-        )}
+        ))}
       </Box>
     ) : null;
   };
 
   const renderRating = () => {
-    return movie?.aggregateRating ? (
+    return movieDetails?.vote_average ? (
       <Box
         sx={{
           borderRadius: "50%",
-          bgcolor: ratingColor(movie.aggregateRating.ratingValue),
+          bgcolor: ratingColor(movieDetails.vote_average),
           width: 70,
           height: 70,
           padding: 2,
@@ -129,7 +116,7 @@ export const MovieModal = (props: MovieModalProps) => {
           boxShadow: 2,
         }}
       >
-        {movie.aggregateRating.ratingValue}/10
+        {movieDetails.vote_average.toFixed(1)}/10
       </Box>
     ) : null;
   };
@@ -146,8 +133,12 @@ export const MovieModal = (props: MovieModalProps) => {
       >
         <Box
           component='img'
-          src={movie?.image || FALLBACK_IMAGE}
-          alt={movie?.name || "Movie poster"}
+          src={
+            movieDetails?.poster_path
+              ? `https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`
+              : FALLBACK_IMAGE
+          }
+          alt={movieDetails?.title || "Movie poster"}
           sx={{
             width: "100%",
             maxWidth: "300px",
@@ -157,7 +148,7 @@ export const MovieModal = (props: MovieModalProps) => {
             boxShadow: 3,
           }}
           onError={(e) => {
-            e.currentTarget.src = "/placeholder-movie.jpg";
+            e.currentTarget.src = FALLBACK_IMAGE;
           }}
         />
         {renderRating()}
@@ -165,46 +156,48 @@ export const MovieModal = (props: MovieModalProps) => {
     );
   };
 
-  const renderCast = () => {
-    return movie?.actor &&
-      Array.isArray(movie.actor) &&
-      movie.actor.length > 0 ? (
-      <Box sx={{ mt: 2 }}>
-        <Typography variant='h6' sx={{ mb: 1, fontWeight: "bold" }}>
-          Cast
-        </Typography>
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-          {movie.actor.map((actor, index) => (
-            <Chip
-              key={index}
-              label={actor.name}
-              sx={{
-                bgcolor: "action.hover",
-                "&:hover": {
-                  bgcolor: "action.selected",
-                },
-              }}
-            />
-          ))}
-        </Box>
-      </Box>
-    ) : null;
-  };
+  // const renderCast = () => {
+  //   return movieDetails?.credits?.cast && movieDetails.credits.cast.length > 0 ? (
+  //     <Box sx={{ mt: 2 }}>
+  //       <Typography variant='h6' sx={{ mb: 1, fontWeight: "bold" }}>
+  //         Cast
+  //       </Typography>
+  //       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+  //         {movieDetails.credits.cast.slice(0, 10).map((actor) => (
+  //           <Chip
+  //             key={actor.id}
+  //             label={actor.name}
+  //             sx={{
+  //               bgcolor: "action.hover",
+  //               "&:hover": {
+  //                 bgcolor: "action.selected",
+  //               },
+  //             }}
+  //           />
+  //         ))}
+  //       </Box>
+  //     </Box>
+  //   ) : null;
+  // };
 
-  const renderDirector = () => {
-    return movie?.director ? (
-      <Box sx={{ mt: 2 }}>
-        <Typography variant='h6' sx={{ mb: 1, fontWeight: "bold" }}>
-          Director
-        </Typography>
-        <Typography variant='body1'>
-          {Array.isArray(movie.director)
-            ? movie.director.map((d) => d.name).join(", ")
-            : movie.director.name}
-        </Typography>
-      </Box>
-    ) : null;
-  };
+  // const renderDirector = () => {
+  //   if (!movieDetails?.credits?.crew) return null;
+
+  //   const directors = movieDetails.credits.crew.filter(
+  //     (crewMember) => crewMember.job === "Director"
+  //   );
+
+  //   return directors.length > 0 ? (
+  //     <Box sx={{ mt: 2 }}>
+  //       <Typography variant='h6' sx={{ mb: 1, fontWeight: "bold" }}>
+  //         Director
+  //       </Typography>
+  //       <Typography variant='body1'>
+  //         {directors.map((director) => director.name).join(", ")}
+  //       </Typography>
+  //     </Box>
+  //   ) : null;
+  // };
 
   const renderMetadata = () => {
     return (
@@ -235,8 +228,8 @@ export const MovieModal = (props: MovieModalProps) => {
         {renderMetadata()}
         <Divider sx={{ my: 1 }} />
         {renderDescription()}
-        {renderCast()}
-        {renderDirector()}
+        {/* {renderCast()} */}
+        {/* {renderDirector()} */}
       </Box>
     );
   };
