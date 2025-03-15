@@ -71,10 +71,14 @@ export interface WatchedMoviesList {
   favorite_count: number;
   iso_639_1: string;
   item_count: number;
-  items: WatchedMoviesItems[];
+  results: WatchedMoviesItems[];
   name: string;
   page: number;
   poster_path: string | null;
   total_pages: number;
   total_results: number;
+  revenue: number;
+  runtime: number;
+  sort_by: string;
+  average_rating: number;
 }

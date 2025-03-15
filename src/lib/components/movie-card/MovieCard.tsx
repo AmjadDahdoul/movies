@@ -11,7 +11,9 @@ export const MovieCard = (props: SearchMovie | WatchedMoviesItems) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { watchedMovies } = useGetWatchedMoviesList();
-  const listOfWatchedMovies = watchedMovies?.items.map((item) => item.id);
+  const listOfWatchedMovies = watchedMovies?.results.map(
+    (results) => results.id
+  );
 
   const alreadyWatched = listOfWatchedMovies?.includes(movieId) ?? true;
 
