@@ -26,7 +26,7 @@ export const HomePage = () => {
         </Typography>
       )}
 
-      {!isLoading && !search && !watchedMovies && (
+      {!isLoading && !isWatchedLoading && !search && !watchedMovies && (
         <Typography variant='h6'>No movies found</Typography>
       )}
 
