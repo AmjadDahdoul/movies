@@ -1,10 +1,22 @@
-import { Box, Button, Card, CardMedia, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardMedia,
+  IconButton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import styles from "./MovieCard.module.scss";
 import { SearchMovie, WatchedMoviesItems } from "../../types/types";
 import { FALLBACK_IMAGE, MovieModal } from "../movie-modal/MovieModal";
 import { useState } from "react";
 import { useAddWatchedMovies } from "../../hooks/use-add-watched-moveis";
 import { useGetWatchedMoviesList } from "../../hooks/use-get-watched-movies-list";
+import { useGetWatchlist } from "../../hooks/use-get-watchlist";
+import { useWatchlist } from "../../hooks/use-watchlist";
+import TurnedInIcon from "@mui/icons-material/TurnedIn";
+import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
 
 export const MovieCard = (props: SearchMovie | WatchedMoviesItems) => {
   const { id: movieId, poster_path, title, original_title } = props;
@@ -34,6 +46,24 @@ export const MovieCard = (props: SearchMovie | WatchedMoviesItems) => {
     addMovieToWatchedList(movieId);
   };
 
+  const { updateMovieToWatchlist } = useWatchlist();
+
+  const { watchlist } = useGetWatchlist();
+
+  const isInWatchlist =
+    watchlist?.results.some((movie) => movie.id === movieId) ?? false;
+
+  const handleAddToWatchlist = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isInWatchlist) {
+      // Remove from watchlist
+      updateMovieToWatchlist(movieId, false);
+      return;
+    }
+    // Add to watchlist
+    updateMovieToWatchlist(movieId, true);
+  };
+
   return (
     <>
       <Card className={styles.card} onClick={handleOnMovieClick}>
@@ -55,19 +85,41 @@ export const MovieCard = (props: SearchMovie | WatchedMoviesItems) => {
           >
             {original_title}
           </Typography>
-          <Button
-            variant='contained'
-            color='primary'
-            onClick={handleAddToWatchedList}
-            disabled={isAddingToWatchedList || alreadyWatched}
-          >
-            {alreadyWatched
-              ? "Watched"
-              : isAddingToWatchedList
-              ? "Adding..."
-              : "Add to Watched"}
-            {}
-          </Button>
+          <Stack direction='row' spacing={1} justifyContent='center'>
+            <Button
+              variant='contained'
+              color='primary'
+              size='small'
+              onClick={handleAddToWatchedList}
+              disabled={isAddingToWatchedList || alreadyWatched}
+            >
+              {alreadyWatched
+                ? "Watched"
+                : isAddingToWatchedList
+                ? "Adding..."
+                : "Add to Watched"}
+              {}
+            </Button>
+
+            {isInWatchlist ? (
+              <IconButton
+                color='primary'
+                size='small'
+                onClick={handleAddToWatchlist}
+              >
+                <TurnedInIcon />
+              </IconButton>
+            ) : (
+              <IconButton
+                color='primary'
+                size='small'
+                onClick={handleAddToWatchlist}
+                title='Add to Watchlist'
+              >
+                <TurnedInNotOutlinedIcon />
+              </IconButton>
+            )}
+          </Stack>
         </Box>
       </Card>
 

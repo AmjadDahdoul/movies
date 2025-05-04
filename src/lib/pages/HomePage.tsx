@@ -5,11 +5,14 @@ import { WatchedMovies } from "../components/watched-movies/WatchedMovies";
 import { useGetMovies } from "../hooks/use-get-movies";
 import { SearchedMovies } from "../components/searched-movies/SearchedMovies";
 import { MovieCardSkeleton } from "../components/movie-card/MovieCardSkeleton";
+import { useGetWatchlist } from "../hooks/use-get-watchlist";
+import { Watchlist } from "../components/watchlist/Watchlist";
 
 export const HomePage = () => {
   const [searchParams] = useSearchParams();
   const search = searchParams.get("search");
 
+  const { watchlist } = useGetWatchlist();
   const { movies: searchedMovies, isLoading } = useGetMovies();
   const { watchedMovies, isLoading: isWatchedLoading } =
     useGetWatchedMoviesList();
@@ -25,6 +28,8 @@ export const HomePage = () => {
           No movies found matching "{search}"
         </Typography>
       )}
+
+      {!search && <Watchlist watchlist={watchlist} />}
 
       {!isLoading && !isWatchedLoading && !search && !watchedMovies && (
         <Typography variant='h6'>No movies found</Typography>
