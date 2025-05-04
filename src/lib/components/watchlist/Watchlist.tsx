@@ -10,7 +10,7 @@ export const Watchlist = ({
   const moviesList = watchlist?.results || [];
 
   return (
-    <Stack spacing={3} alignItems='center' margin={1}>
+    <Stack spacing={2} alignItems='center' margin={1}>
       <Typography variant='h6' component='h5' textAlign='center'>
         Watchlist: {watchlist?.total_results || 0}
       </Typography>
