@@ -8,7 +8,7 @@ export const useGetWatchlist = () => {
     endpoint: `/account/${ACCOUNT_ID}/watchlist/movies`,
     params: {
       page: 1,
-      sort_by: "created_at.asc",
+      sort_by: "created_at.desc",
     },
   });
 
