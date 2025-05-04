@@ -12,7 +12,7 @@ export const HomePage = () => {
   const [searchParams] = useSearchParams();
   const search = searchParams.get("search");
 
-  const { watchlist } = useGetWatchlist();
+  const { watchlist, isLoading: isWatchlistLoading } = useGetWatchlist();
   const { movies: searchedMovies, isLoading } = useGetMovies();
   const { watchedMovies, isLoading: isWatchedLoading } =
     useGetWatchedMoviesList();
@@ -29,8 +29,11 @@ export const HomePage = () => {
         </Typography>
       )}
 
-      {!isLoading && !search && watchlist && (
-        <CollapsibleWatchlist watchlist={watchlist} />
+      {!search && (
+        <CollapsibleWatchlist
+          watchlist={watchlist}
+          isWatchlistLoading={isWatchlistLoading}
+        />
       )}
 
       {!isLoading && !isWatchedLoading && !search && !watchedMovies && (
