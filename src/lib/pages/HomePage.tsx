@@ -6,7 +6,7 @@ import { useGetMovies } from "../hooks/use-get-movies";
 import { SearchedMovies } from "../components/searched-movies/SearchedMovies";
 import { MovieCardSkeleton } from "../components/movie-card/MovieCardSkeleton";
 import { useGetWatchlist } from "../hooks/use-get-watchlist";
-import { Watchlist } from "../components/watchlist/Watchlist";
+import { CollapsibleWatchlist } from "../components/watchlist/CollapsibleWatchlist";
 
 export const HomePage = () => {
   const [searchParams] = useSearchParams();
@@ -29,7 +29,9 @@ export const HomePage = () => {
         </Typography>
       )}
 
-      {!search && <Watchlist watchlist={watchlist} />}
+      {!isLoading && !search && watchlist && (
+        <CollapsibleWatchlist watchlist={watchlist} />
+      )}
 
       {!isLoading && !isWatchedLoading && !search && !watchedMovies && (
         <Typography variant='h6'>No movies found</Typography>
