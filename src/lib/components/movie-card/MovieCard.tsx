@@ -19,7 +19,7 @@ import TurnedInIcon from "@mui/icons-material/TurnedIn";
 import TurnedInNotOutlinedIcon from "@mui/icons-material/TurnedInNotOutlined";
 
 export const MovieCard = (props: SearchMovie | WatchedMoviesItems) => {
-  const { id: movieId, poster_path, title, original_title } = props;
+  const { id: movieId, poster_path, title } = props;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { watchedMovies } = useGetWatchedMoviesList();
@@ -83,7 +83,7 @@ export const MovieCard = (props: SearchMovie | WatchedMoviesItems) => {
             fontFamily='sans-serif'
             textAlign={"center"}
           >
-            {original_title}
+            {title}
           </Typography>
           <Stack direction='row' spacing={1} justifyContent='center'>
             <Button
