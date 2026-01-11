@@ -33,7 +33,7 @@ function App() {
   return (
     <ThemeProvider>
       <BrowserRouter>
-        <Layout title='Tranquility'>
+        <Layout title='Tranquility Cinema'>
           {showSplashCursor && <SplashCursor />}
           <HomePage />
         </Layout>

@@ -33,7 +33,7 @@ export const Watchlist = ({
       </Typography>
 
       <Button variant='contained' onClick={copyToClipboard}>
-        Copy
+        Copy List
       </Button>
 
       <MovieGrid movies={moviesList} />
